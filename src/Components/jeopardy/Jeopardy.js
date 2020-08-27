@@ -2,34 +2,109 @@ import React, { Component } from 'react';
 //import our service
 import JeopardyService from "../../jeopardyService";
 class Jeopardy extends Component {
-  //set our initial state and set up our service as this.client on this component
-  constructor(props){
-    super(props);
-    this.client = new JeopardyService();
-    this.state = {
-      data: {},
-      score: 0
+    //set our initial state and set up our service as this.client on this component
+    constructor(props) {
+        super(props);
+        this.client = new JeopardyService();
+        this.state = {
+            data: {},
+            score: 0,
+            formData: {
+                firstName: "",
+                lastName: "",
+                email: ""
+            }
+
+
+        }
     }
-  }
-  //get a new random question from the API and add it to the data object in state
-  getNewQuestion() {
-    return this.client.getQuestion().then(result => {
-      this.setState({
-        data: result.data[0]
-      })
-    })
-  }
-  //when the component mounts, get a the first question
-  componentDidMount() {
-    this.getNewQuestion();
-  }
-  //display the results on the screen
-  render() {
-    return (
-      <div>
-        {JSON.stringify(this.state.data)}
-      </div>
-    );
-  }
+    //get a new random question from the API and add it to the data object in state
+    getNewQuestion() {
+        return this.client.getQuestion().then(result => {
+            this.setState({
+                data: result.data[0]
+            })
+        })
+    }
+    //when the component mounts, get a the first question
+    componentDidMount() {
+        this.getNewQuestion();
+    }
+
+    handleChange = (event) => {
+        let formData = this.state.formData;
+        formData[event.target.name] = event.target.value;
+        this.setState({formData});
+    }
+    handleSubmit = (event) => {
+        event.preventDefault();
+        this.setState({
+            submitted: true
+        })
+    }
+    resetForm = (event) => {
+        this.setState({
+            submitted: false,
+            formData: {
+                firstName: "",
+                lastName: "",
+                email: ""
+            }
+        })
+    }
+
+    //display the results on the screen
+    render() {
+        let category = 'loading'
+
+        if (this.state.data && this.state.data.category) {
+            category = this.state.data.category.title
+        }
+
+
+
+        if(this.state.submitted){
+            return (
+                <div>
+                    Thank you, {this.state.formData.firstName}, for your answer. <br/>
+                    <button onClick={this.resetForm}>Reset Form</button>
+                </div>
+            )
+        }
+
+
+
+        return (
+            <div>
+                <strong>Question: </strong>{(this.state.data.question)}<br></br>
+                <strong>Value: </strong>{this.state.data.value}<br></br>
+                <strong>Category: </strong>{category}<br></br>
+                <strong>Score: </strong>{this.state.score}<br></br>
+                <form onSubmit={this.handleSubmit}>
+                    <div>
+                        <label>Answer: </label>
+                        <input onChange={this.handleChange} type="text" name="firstName" value={this.state.formData.firstName} />
+                    </div>
+                    <button>Submit Answer</button> <br/>
+                    {this.state.formData.firstName}
+                    <button onClick={this.resetForm}>Reset</button>
+                    
+
+
+                </form>
+
+                
+                
+                {/* <strong>Answer: </strong> <input type="text"
+                    value={this.state.value}
+                    onChange={this.handleChange} //https://stackoverflow.com/questions/52915543/how-to-create-a-text-box-in-react
+                />
+                <button>Submit Answer</button> */}
+            </div>
+
+
+
+        );
+    }
 }
 export default Jeopardy;

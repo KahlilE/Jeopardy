@@ -66,7 +66,6 @@ class Jeopardy extends Component {
         if(this.state.submitted){
             return (
                 <div>
-                    Thank you, {this.state.formData.firstName}, for your answer. <br/>
                     <button onClick={this.resetForm}>Reset Form</button>
                 </div>
             )

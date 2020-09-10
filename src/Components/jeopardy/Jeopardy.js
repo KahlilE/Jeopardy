@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import our service
-import JeopardyService from "../../jeopardyService";
+import JeopardyService from "../../Services/jeopardyService";
 class Jeopardy extends Component {
     //set our initial state and set up our service as this.client on this component
     constructor(props) {
@@ -39,19 +39,11 @@ class Jeopardy extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({
-            submitted: true
+            
         })
+        this.getNewQuestion()
     }
-    resetForm = (event) => {
-        this.setState({
-            submitted: false,
-            formData: {
-                firstName: "",
-                lastName: "",
-                email: ""
-            }
-        })
-    }
+    
 
     //display the results on the screen
     render() {
@@ -61,12 +53,20 @@ class Jeopardy extends Component {
             category = this.state.data.category.title
         }
 
+        
+        
 
 
         if(this.state.submitted){
+            
             return (
+                
+                
                 <div>
+                    
+                    
                     <button onClick={this.resetForm}>Reset Form</button>
+                    
                 </div>
             )
         }
@@ -85,8 +85,8 @@ class Jeopardy extends Component {
                         <input onChange={this.handleChange} type="text" name="firstName" value={this.state.formData.firstName} />
                     </div>
                     <button>Submit Answer</button> <br/>
-                    {this.state.formData.firstName}
-                    <button onClick={this.resetForm}>Reset</button>
+                    
+                    
                     
 
 

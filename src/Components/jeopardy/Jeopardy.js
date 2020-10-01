@@ -12,7 +12,8 @@ class Jeopardy extends Component {
             formData: {
                 firstName: "",
                 lastName: "",
-                email: ""
+                email: "",
+                answer: ""
             }
 
 
@@ -37,10 +38,11 @@ class Jeopardy extends Component {
         this.setState({formData});
     }
     handleSubmit = (event) => {
+        let newScore = 0
         event.preventDefault();
-        this.setState({
-            
-        })
+        if(this.state.data.answer === this.state.formData.answer){
+            newScore = this.setState({score: newScore})
+        }
         this.getNewQuestion()
     }
     
@@ -82,7 +84,10 @@ class Jeopardy extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label>Answer: </label>
-                        <input onChange={this.handleChange} type="text" name="firstName" value={this.state.formData.firstName} />
+                        <input onChange={this.handleChange} 
+                        type="text" 
+                        name="answer" 
+                        value={this.state.formData.name} />
                     </div>
                     <button>Submit Answer</button> <br/>
                     
